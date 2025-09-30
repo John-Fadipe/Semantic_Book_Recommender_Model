@@ -12,7 +12,7 @@ class SemanticBookModel:
 
         self.raw_df = pd.read_csv(books_path, encoding = "utf-8")
         self.raw_df["large_thumbnail"] = (
-            self.raw_df["thumbnail"].fillna("cover-not-found.jpg") + "&fife=w800"
+            self.raw_df["thumbnail"].fillna("Images/cover-not-found.jpg") + "&fife=w800"
         )
 
         self.categories = ["All"] + sorted(self.raw_df["simple_categories"].unique())
@@ -22,7 +22,7 @@ class SemanticBookModel:
         result = self.raw_df.loc[self.raw_df["book_id"] == book_id, "large_thumbnail"]
         if not result.empty:
             return result.iloc[0]
-        return "cover-not-found.jpg"
+        return "Images/cover-not-found.jpg"
     
     def load_text(self, path = "Text Folder/tagged_description.txt"):
         documents = [
