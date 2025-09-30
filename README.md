@@ -34,4 +34,4 @@ This project is a semantic search–powered book recommendation app that uses na
 
 - Output: Ranked list of books with cover images and metadata
 
-Expandable book descriptions (“Show Preview” dropdown)
+- Expandable book descriptions (“Show Preview” dropdown)
