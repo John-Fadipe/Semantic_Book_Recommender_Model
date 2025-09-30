@@ -1,12 +1,16 @@
-flask
-pandas
-numpy
-requests
-python-dotenv
-gunicorn
+# Web / API
+flask==3.1.2
+gunicorn==23.0.0
+requests==2.32.5
+python-dotenv==1.1.1
 
-langchain
-langchain-community
-langchain-huggingface
-chromadb
-sentence-transformers
+# Data / computation
+numpy==2.3.3
+pandas==2.3.3
+
+# LangChain / embeddings
+langchain==0.3.27
+langchain-community==0.3.30
+langchain-huggingface==0.3.1
+chromadb==1.1.0
+sentence-transformers==5.1.1
