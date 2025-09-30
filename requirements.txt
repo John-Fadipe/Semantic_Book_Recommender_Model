@@ -1,11 +1,12 @@
 flask
 pandas
+numpy
+requests
+python-dotenv
+gunicorn
+
 langchain
 langchain-community
 langchain-huggingface
 chromadb
 sentence-transformers
-numpy
-requests
-python-dotenv
-gunicorn

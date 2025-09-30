@@ -2,11 +2,11 @@ import pandas as pd
 from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.docstore.document import Document
 
 class SemanticBookModel:
-    def __init__(self, books_path="CSV Folder/books_with_emotions.csv"):
+    def __init__(self, books_path="csv_folder/books_with_emotions.csv"):
         self.db_books = None
         self.embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
@@ -24,7 +24,7 @@ class SemanticBookModel:
             return result.iloc[0]
         return "Images/cover-not-found.jpg"
     
-    def load_text(self, path = "Text Folder/tagged_description.txt"):
+    def load_text(self, path = "text_folder/tagged_description.txt"):
         documents = [
             Document(
             page_content=row["description"],

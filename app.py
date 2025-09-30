@@ -4,8 +4,8 @@ from semantic_book_model import SemanticBookModel
 
 app = Flask(__name__)
 
-book_model = SemanticBookModel("CSV Folder/books_with_emotions.csv")
-book_model.load_text("Text Folder/tagged_description.txt") 
+book_model = SemanticBookModel("csv_folder/books_with_emotions.csv")
+book_model.load_text("text_folder/tagged_description.txt") 
 
 
 @app.route("/")
