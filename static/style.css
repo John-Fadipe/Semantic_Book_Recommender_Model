@@ -40,12 +40,17 @@ button:hover {
 }
 
 .book {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     background: white;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     text-align: center;
     transition: transform 0.2s ease;
+    min-height: 350px;
 }
 
 .book:hover {
@@ -59,18 +64,6 @@ button:hover {
     border-radius: 5px;
 }
 
-.toggle-btn {
-    margin-top: 8px;
-    padding: 6px 12px;
-    background: #0073e6;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.toggle-btn:hover {
-    background: #ddd;
-}
 
 .description-block {
     display: none;
@@ -82,4 +75,20 @@ button:hover {
     font-size: 0.95rem;
     line-height: 1.4;
     text-align: left;   
+    width: 100%
+    min-height: 0;
+}
+
+.toggle-btn {
+    margin-top: 12px;
+    padding: 6px 12px;
+    background: #0073e6;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.toggle-btn:hover {
+    background: #005bb5;
 }
