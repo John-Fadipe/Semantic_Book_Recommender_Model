@@ -5,3 +5,7 @@ langchain-community
 langchain-huggingface
 chromadb
 sentence-transformers
+numpy
+requests
+python-dotenv
+gunicorn

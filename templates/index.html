@@ -1,48 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semantic Book Recommender</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>Semantic Book Recommender</h1>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Semantic Book Recommender</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <h1>Semantic Book Recommender</h1>
 
-    <form method="POST" action="/recommend" class="form-container">
-        <input type="text" name="query" placeholder="Describe a book..." value="{{ query or '' }}" required>
-        
-        <select name="category">
-            <option value="All">All</option>
-            {% for cat in book_model.categories %}
-                <option value="{{ cat }}" {% if category==cat %}selected{% endif %}>{{ cat }}</option>
+        <form method="POST" action="/recommend" class="form-container">
+            <input type="text" name="query" placeholder="Describe a book..." value="{{ query or '' }}" required>
+
+            <select name="category">
+                <option value="All">All</option>
+                {% for cat in book_model.categories %}
+                    <option value="{{ cat }}" {% if category==cat %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="tone">
+                <option value="All">All</option>
+                {% for t in book_model.tones %}
+                    <option value="{{ t }}" {% if tone==t %}selected{% endif %}>{{ t }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Find recommendations</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if results %}
+        <h2>Recommendations</h2>
+        <div class="gallery">
+            {% for book in results %}
+            <div class="book">
+                <a href="{{ book.link }}" target="_blank" class="book-link">
+                    <img src="{{ book.thumb }}" alt="{{ book.title }}" class="book-thumbnail" />
+                </a>
+
+                <p><strong>{{ book.title }}</strong> by {{ book.authors }}</p>  
+
+                <button class="toggle-btn" onclick="toggleDescription(event, 'desc{{ book.id }}')">
+                    Show Preview
+                </button>
+
+                <div id="desc{{ book.id }}" class="description-block"
+                    data-preview="{{ book.full_description.split()[:25] | join(' ') }}..."
+                    data-full="{{ book.full_description }}">
+                </div>
+            </div>
             {% endfor %}
-        </select>
-
-        <select name="tone">
-            <option value="All">All</option>
-            {% for t in book_model.tones %}
-                <option value="{{ t }}" {% if tone==t %}selected{% endif %}>{{ t }}</option>
-            {% endfor %}
-        </select>
-
-        <button type="submit">Find recommendations</button>
-    </form>
-
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
-
-    {% if results %}
-    <h2>Recommendations</h2>
-    <div class="gallery">
-        {% for img, caption in results %}
-        <div class="item">
-            <img src="{{ img }}" alt="Book cover">
-            <p>{{ caption }}</p>
         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-</body>
-</html>
+        {% endif %}
+
+        <script>
+        function toggleDescription(event, id) {
+            event.preventDefault();
+            var block = document.getElementById(id);
+            var button = event.target;
+
+            if (block.style.display === "block") {
+                block.style.display = "none";
+                button.textContent = "Show Preview";
+                block.textContent = "";
+            } else {
+                block.style.display = "block";
+                block.textContent = block.getAttribute("data-preview");
+                button.textContent = "Hide Preview";
+            }
+        }
+        </script>
+    </body>
+    </html> 

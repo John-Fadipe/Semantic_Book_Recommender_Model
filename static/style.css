@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 2em;
-    background: #f8f9fa;
+    margin: 20px;
+    background: #f9f9f9;
     color: #333;
 }
 
@@ -14,47 +14,72 @@ h1 {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
-input[type="text"], select {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
+input, select, button {
+    padding: 10px;
     border-radius: 6px;
+    border: 1px solid #ccc;
 }
 
 button {
-    padding: 8px 14px;
-    background: #007bff;
+    background: #0073e6;
     color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #005bb5;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.book {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.book:hover {
+    transform: translateY(-5px);
+}
+
+.book-thumbnail {
+    width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.toggle-btn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: #0073e6;
     border: none;
     border-radius: 6px;
     cursor: pointer;
 }
 
-button:hover {
-    background: #0056b3;
+.toggle-btn:hover {
+    background: #ddd;
 }
 
-.error {
-    color: red;
-    text-align: center;
+.description-block {
+    display: none;
     margin-top: 10px;
-}
-
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 20px;
-}
-
-.item {
-    text-align: center;
-}
-
-.item img {
-    max-width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    padding: 10px;
+    background: #f9f9f9;
+    border-left: 3px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    text-align: left;   
 }

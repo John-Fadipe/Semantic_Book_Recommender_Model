@@ -3,6 +3,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain.docstore.document import Document
 
 class SemanticBookModel:
     def __init__(self, books_path="CSV Folder/books_with_emotions.csv"):
@@ -22,14 +23,16 @@ class SemanticBookModel:
         if not result.empty:
             return result.iloc[0]
         return "cover-not-found.jpg"
-
-    def load_text(self, path = "tagged_description.txt"):
-        raw_documents = TextLoader(path, encoding="utf-8").load()
-        text_splitter = CharacterTextSplitter(
-            separator="\n", chunk_size=500, chunk_overlap=50
-        )
-        documents = text_splitter.split_documents(raw_documents)
-
+    
+    def load_text(self, path = "Text Folder/tagged_description.txt"):
+        documents = [
+            Document(
+            page_content=row["description"],
+            metadata={"isbn13": row["isbn13"]}
+            )
+        for _, row in self.raw_df.iterrows()
+        if pd.notna(row["description"])
+          ]
         self.db_books = Chroma.from_documents(documents, self.embeddings)
 
     def retrieve_semantic_recommendations(
@@ -38,7 +41,7 @@ class SemanticBookModel:
         category: str = None,
         tone: str = None,
         initial_top_k: int = 50,
-        final_top_k: int = 16,
+        final_top_k: int = 10,
     ) -> pd.DataFrame:
         if self.db_books is None:
             raise RuntimeError("Database not loaded. Call load_text() first.")
@@ -70,10 +73,11 @@ class SemanticBookModel:
         recommendations = self.retrieve_semantic_recommendations(query, category, tone)
         results = []
 
-        for _, row in recommendations.iterrows():
+        for idx, row in recommendations.iterrows():
             description = row["description"]
+
             truncated_desc_split = description.split()
-            truncated_description = " ".join(truncated_desc_split[:30]) + "..."
+            preview = " ".join(truncated_desc_split[:25]) + ("..." if len(truncated_desc_split) > 25 else "")
 
             authors_split = row["authors"].split(";")
             if len(authors_split) == 2:
@@ -83,6 +87,16 @@ class SemanticBookModel:
             else:
                 authors_str = row["authors"]
 
-            caption = f"{row['title']} by {authors_str}: {truncated_description}"
-            results.append((row["large_thumbnail"], caption))
+            amazon_link = f"https://www.amazon.com/s?k={row['title'].replace(' ', '+')}"
+
+            results.append({
+                "id": idx,
+                "thumb": row["large_thumbnail"],
+                "title": row["title"],
+                "authors": authors_str,
+                "preview": preview,
+                "full_description": description,
+                "link": amazon_link
+            })
+
         return results
